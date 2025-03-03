@@ -9,6 +9,7 @@ type HomeStackParams = {
   Step1: undefined;
 };
 
+// @ts-ignore
 const HomeStack = createNativeStackNavigator<HomeStackParams>();
 
 const HomeScreenStack = () => (
