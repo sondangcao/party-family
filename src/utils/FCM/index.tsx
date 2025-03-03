@@ -15,14 +15,17 @@ import notifee, {
   EventType,
 } from '@notifee/react-native';
 import {Alert, Platform} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FCMWrapper = ({children}: {children: React.ReactNode}) => {
-  //get token when u wanna send a test notification
-  messaging()
-    .getToken()
-    .then(token => {
-      console.log(token);
-    });
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    await AsyncStorage.setItem('token-device', token);
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -83,7 +86,7 @@ const FCMWrapper = ({children}: {children: React.ReactNode}) => {
           console.log('User dismissed notification', detail.notification);
           break;
         case EventType.PRESS:
-          console.log('detail', detail);
+          console.log('User da xem notifications', detail);
           break;
       }
     });
