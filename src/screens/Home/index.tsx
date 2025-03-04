@@ -1,16 +1,14 @@
 import React, {useEffect} from 'react';
-import {View, Text, Button} from 'react-native';
+import {View} from 'react-native';
 import style from './styles';
 import axiosClient from '../../config/axiosConfig';
 import {useAppDispatch} from '../../hooks/useAppDispatch';
 import {useSelector} from 'react-redux';
 import {authSelector} from '../../redux/selectors/userSelector';
 import {setUser} from '../../redux/slices/userSlice';
+import {Card, Text, Button} from '@rneui/base';
 
 const HomeScreen = () => {
-  // const linkTo = useLinkTo();
-  // const navigation = useNavigation<NativeStackNavigationProp<any>>();
-
   const dispatch = useAppDispatch();
   const email = useSelector(authSelector);
   console.log('data', email);
@@ -32,8 +30,18 @@ const HomeScreen = () => {
 
   return (
     <View style={style.view}>
-      <Text>Home!</Text>
-      <Button title="Link to step 1" />
+      <Card>
+        <Text>Word of the Day</Text>
+        <Text h4>be-nev-o=lent</Text>
+        <Text>adjective</Text>
+        <Text>
+          well meaning and kindly.
+          {'"a benevolent smile"'}
+        </Text>
+        <Button size="sm" type="clear">
+          Learn More
+        </Button>
+      </Card>
     </View>
   );
 };
