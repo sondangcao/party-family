@@ -4,13 +4,13 @@ import style from './styles';
 import axiosClient from '../../config/axiosConfig';
 import {useAppDispatch} from '../../hooks/useAppDispatch';
 import {useSelector} from 'react-redux';
-import {authSelector} from '../../redux/selectors/userSelector';
-import {setUser} from '../../redux/slices/userSlice';
+import {isLoginSelector} from '../../redux/selectors/authSelector';
+import {setUser} from '../../redux/slices/authSlice';
 import {Card, Text, Button} from '@rneui/base';
 
 const HomeScreen = () => {
   const dispatch = useAppDispatch();
-  const email = useSelector(authSelector);
+  const email = useSelector(isLoginSelector);
   console.log('data', email);
 
   useEffect(() => {
