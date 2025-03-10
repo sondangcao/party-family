@@ -1,33 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View} from 'react-native';
 import style from './styles';
-import axiosClient from '../../config/axiosConfig';
-import {useAppDispatch} from '../../hooks/useAppDispatch';
-import {useSelector} from 'react-redux';
-import {authSelector} from '../../redux/selectors/userSelector';
-import {setUser} from '../../redux/slices/userSlice';
 import {Card, Text, Button} from '@rneui/base';
 
 const HomeScreen = () => {
-  const dispatch = useAppDispatch();
-  const email = useSelector(authSelector);
-  console.log('data', email);
-
-  useEffect(() => {
-    (async () => {
-      const res = await axiosClient.post('/auth/login', {
-        email: 'dangcaoson.it@gmail.com',
-        password: 'dangcaoson98',
-      });
-      console.log('res', res.data?.access_token);
-      dispatch(setUser(res.data?.access_token));
-    })();
-
-    return () => {
-      // this now gets called when the component unmounts
-    };
-  }, [dispatch]);
-
   return (
     <View style={style.view}>
       <Card>
