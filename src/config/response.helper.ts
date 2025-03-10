@@ -1,21 +1,22 @@
+// import {ToastAndroid} from 'react-native';
+import Toast from 'react-native-toast-message';
+
 export default {
-  notificationError: (error: {
-    status: any;
-    data: {errors: any[]; key: any};
-  }) => {
+  notificationError: (error: any) => {
     switch (error.status) {
       case 500:
-        console.log('500');
+        Toast.show(error.response?.data.message);
+        // ToastAndroid.show('A pikachu appeared nearby !', ToastAndroid.SHORT);
         break;
       default:
-        if (error.data?.errors) {
-          error.data?.errors.forEach(({key, params}: any) => {
-            console.log('error', error, key, params);
-          });
-        } else if (error.data?.key) {
-          console.log('error other', error);
+        if (error.response?.data) {
+          Toast.show(error.response?.data?.message);
+          // error.response?.data?.message?.forEach(({field, message}: any) => {
+          //   console.log(field);
+          //   Toast.show(message);
+          // });
         } else {
-          throw error;
+          throw Error(error);
         }
     }
   },

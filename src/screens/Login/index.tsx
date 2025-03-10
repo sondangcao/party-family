@@ -1,10 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ImageBackground, StyleSheet, View, Text} from 'react-native';
 import {InputField, AppButton} from '../../components';
 import {Icon} from 'react-native-elements';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import axiosClient from '../../config/axiosConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import Toast from 'react-native-toast-message';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Email không hợp lệ').required('Bắt buộc'),
@@ -15,7 +20,10 @@ const validationSchema = Yup.object().shape({
 
 const LoginScreen = () => {
   const [hidePassword, setHidePassword] = useState<boolean>(true);
-
+  useEffect(() => {
+    AsyncStorage.removeItem('token');
+  }, []);
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const {
     control,
     handleSubmit,
@@ -25,15 +33,27 @@ const LoginScreen = () => {
     mode: 'onChange',
   });
 
-  console.log('errors', errors);
-
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = async (data: any) => {
+    try {
+      const res = await axiosClient.post('/auth/login', {
+        email: data.email,
+        password: data.password,
+      });
+      if (res) {
+        await AsyncStorage.setItem('token', res.data?.access_token);
+        navigation.navigate('Home');
+      }
+    } catch (error: any) {
+      Toast.show({type: 'error', text1: error.response?.data.message});
+    }
+  };
 
   return (
     <ImageBackground
       source={require('../../assets/img/bg.png')}
       style={styles.background}
       resizeMode="cover">
+      <Toast position="top" topOffset={40} />
       <View style={styles.view}>
         <Text style={styles.text}>Party Family</Text>
         <Controller
