@@ -1,6 +1,8 @@
 import axios from 'axios';
 import queryString from 'query-string';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {logoutAction} from '../redux/slices/authSlice';
+import {store} from '../redux/store';
 
 export const BASE_URL = 'http://192.168.1.104:3000';
 
@@ -37,9 +39,8 @@ axiosClient.interceptors.response.use(
       console.log(error.response?.data);
     }
     if (error.status === 401) {
-      console.log('authozied');
       await AsyncStorage.removeItem('token');
-      //   store.dispatch(logoutAction());
+      store.dispatch(logoutAction(false));
       return Promise.resolve();
     }
     throw error;
