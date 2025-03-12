@@ -1,57 +1,56 @@
-import React, {FC, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {FC} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 
 type SelectComponentProps = {
   data: {label: string; value: string}[];
+  onChange: (value: string) => void;
+  value: string;
+  label: string;
 };
 
 const Select: FC<SelectComponentProps> = props => {
-  console.log(props);
-
-  const [value, setValue] = useState(null);
-  const data = [
-    {label: 'Item 1', value: '1'},
-    {label: 'Item 2', value: '2'},
-    {label: 'Item 3', value: '3'},
-    {label: 'Item 4', value: '4'},
-    {label: 'Item 5', value: '5'},
-    {label: 'Item 6', value: '6'},
-    {label: 'Item 7', value: '7'},
-    {label: 'Item 8', value: '8'},
-  ];
-
   return (
-    <Dropdown
-      style={styles.dropdown}
-      placeholderStyle={styles.placeholderStyle}
-      selectedTextStyle={styles.selectedTextStyle}
-      inputSearchStyle={styles.inputSearchStyle}
-      iconStyle={styles.iconStyle}
-      data={data}
-      search
-      maxHeight={300}
-      labelField="label"
-      valueField="value"
-      placeholder="Select item"
-      searchPlaceholder="Search..."
-      value={value}
-      onChange={item => {
-        setValue(item.value);
-      }}
-    />
+    <View style={styles.viewWrapper}>
+      <Text style={styles.label}>{props.label}</Text>
+      <Dropdown
+        style={styles.dropdown}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={props.data}
+        search
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder="Select item"
+        searchPlaceholder="Search..."
+        value={props.value}
+        onChange={item => props.onChange(item.value)}
+      />
+    </View>
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    width: '90%',
-    alignSelf: 'center',
+  viewWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
+  label: {
+    paddingBottom: 4,
+    fontWeight: '800',
   },
   dropdown: {
+    width: '100%',
     height: 50,
     borderWidth: 1,
     borderColor: '#DADADA',
     borderRadius: 8,
+    marginBottom: 30,
     paddingHorizontal: 10,
     backgroundColor: '#FFF',
     justifyContent: 'center',

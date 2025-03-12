@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ImageBackground, StyleSheet, View, Text} from 'react-native';
+import {ImageBackground, View, Text} from 'react-native';
 import {InputField, AppButton} from '../../components';
 import {Icon} from 'react-native-elements';
 import {useForm, Controller} from 'react-hook-form';
@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
+import {styles} from './styles';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Email không hợp lệ').required('Bắt buộc'),
@@ -107,7 +108,9 @@ const LoginScreen = () => {
           <AppButton
             title="Sign up"
             type="clear"
-            onClick={() => {}}
+            onClick={() => {
+              navigation.navigate('Register');
+            }}
             color="#0D522C"
             size="md"
           />
@@ -123,40 +126,4 @@ const LoginScreen = () => {
     </ImageBackground>
   );
 };
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  text: {
-    textAlign: 'center',
-    fontSize: 32,
-    fontWeight: '800',
-    color: '#7ED957',
-    marginBottom: 60,
-  },
-  view: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    width: '100%',
-    justifyContent: 'center',
-    padding: 16,
-  },
-  view2: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  button: {
-    width: '100%',
-    height: 50,
-    borderRadius: 16,
-  },
-  input: {
-    height: 48,
-  },
-});
 export default LoginScreen;
