@@ -2,6 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../screens/Login';
+import ForgotPasswordScreen from '../screens/ForgotPassword';
 import RegisterScreen from '../screens/Register';
 import HomeScreen from '../screens/Home';
 import Step1 from '../screens/Step1';
@@ -13,6 +14,7 @@ type HomeStackParams = {
   Step1: undefined;
   Login: undefined;
   Register: undefined;
+  ForgotPassword: undefined;
 };
 
 // @ts-ignore
@@ -28,6 +30,10 @@ const HomeScreenStack = () => {
         <>
           <HomeStack.Screen name="Login" component={LoginScreen} />
           <HomeStack.Screen name="Register" component={RegisterScreen} />
+          <HomeStack.Screen
+            name="ForgotPassword"
+            component={ForgotPasswordScreen}
+          />
         </>
       ) : (
         <>

@@ -117,7 +117,9 @@ const LoginScreen = () => {
           <AppButton
             title="Forgot password"
             type="clear"
-            onClick={() => {}}
+            onClick={() => {
+              navigation.navigate('ForgotPassword');
+            }}
             color="#0D522C"
             size="md"
           />
