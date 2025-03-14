@@ -11,6 +11,8 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
 import {styles} from './styles';
+import {useAppDispatch} from '../../hooks/useAppDispatch';
+import {isLoginAction} from '../../redux/slices/authSlice';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Email không hợp lệ').required('Bắt buộc'),
@@ -21,6 +23,7 @@ const validationSchema = Yup.object().shape({
 
 const LoginScreen = () => {
   const [hidePassword, setHidePassword] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     AsyncStorage.removeItem('token');
   }, []);
@@ -41,6 +44,7 @@ const LoginScreen = () => {
         password: data.password,
       });
       if (res) {
+        dispatch(isLoginAction(true));
         await AsyncStorage.setItem('token', res.data?.access_token);
         navigation.navigate('Home');
       }
@@ -117,7 +121,9 @@ const LoginScreen = () => {
           <AppButton
             title="Forgot password"
             type="clear"
-            onClick={() => {}}
+            onClick={() => {
+              navigation.navigate('ForgotPassword');
+            }}
             color="#0D522C"
             size="md"
           />
