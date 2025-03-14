@@ -43,7 +43,6 @@ const ForgotPasswordScreen = () => {
           });
           setTimeout(() => {
             setSent(true);
-            setTimeLeft(600);
           }, 1500);
         }
       } else {
@@ -52,12 +51,9 @@ const ForgotPasswordScreen = () => {
           otp: otpInput,
         });
         if (res.status === 200) {
-          //TODO: redirect change password screen
-          setOtpInput('');
-          //   setTimeout(() => {
-          //     setSent(true);
-          //     setTimeLeft(600);
-          //   }, 1500);
+          navigation.navigate('ChangePassword', {
+            email: data.email,
+          });
         }
       }
     } catch (error: any) {
@@ -125,7 +121,6 @@ const ForgotPasswordScreen = () => {
           <OtpInputs
             handleChange={code => setOtpInput(code)}
             numberOfInputs={6}
-            value={otpInput}
             style={styles.otpContainer}
             inputStyles={styles.otpInput}
             autofillFromClipboard={false}
