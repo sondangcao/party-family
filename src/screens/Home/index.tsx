@@ -24,12 +24,15 @@ const HomeScreen = () => {
     {},
   );
   const [listParty, setListParty] = useState<any>([]);
+  const [listDish, setListDish] = useState<any>([]);
   useEffect(() => {
     (async () => {
       const user = await axiosClient.get('/user/profile');
       const parties = await axiosClient.get('/party/list');
+      const dishes = await axiosClient.get('dish/list');
       setName(`${user.data.user.firstName} ${user.data.user.lastName}`);
       setListParty(parties?.data.parties);
+      setListDish(dishes.data?.data);
     })();
 
     return () => {};
@@ -86,13 +89,7 @@ const HomeScreen = () => {
               </ListItem.Accordion>
             ))}
           </View>
-          <HorizontalScrollView
-            data={[
-              {title: 'Party 1', description: 'https://example.com/image1.jpg'},
-              {title: 'Party 2', description: 'https://example.com/image2.jpg'},
-              {title: 'Party 3', description: 'https://example.com/image3.jpg'},
-            ]}
-          />
+          <HorizontalScrollView data={listDish} />
         </View>
       </ScrollView>
     </ImageBg>
