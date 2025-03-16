@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  AppButton,
   AppHeader,
   HorizontalScrollView,
   ImageBg,
@@ -7,7 +8,7 @@ import {
 } from '../../components';
 import axiosClient from '../../config/axiosConfig';
 import {ListItem} from '@rneui/themed';
-import {Icon} from 'react-native-elements';
+import {Avatar, Icon} from 'react-native-elements';
 import {
   ScrollView,
   Text,
@@ -17,26 +18,33 @@ import {
   Platform,
 } from 'react-native';
 import styles from './styles';
+import {useAppDispatch} from '../../hooks/useAppDispatch';
+import {setUserAction} from '../../redux/slices/userSlice';
+import {userSelector} from '../../redux/selectors/userSelector';
+import {useSelector} from 'react-redux';
 
 const HomeScreen = () => {
+  const dispatch = useAppDispatch();
   const [name, setName] = useState<string>('');
   const [expandedItems, setExpandedItems] = useState<{[key: number]: boolean}>(
     {},
   );
   const [listParty, setListParty] = useState<any>([]);
   const [listDish, setListDish] = useState<any>([]);
+  const userProfile = useSelector(userSelector);
   useEffect(() => {
     (async () => {
       const user = await axiosClient.get('/user/profile');
       const parties = await axiosClient.get('/party/list');
       const dishes = await axiosClient.get('dish/list');
+      dispatch(setUserAction(user.data.user));
       setName(`${user.data.user.firstName} ${user.data.user.lastName}`);
       setListParty(parties?.data.parties);
       setListDish(dishes.data?.data);
     })();
 
     return () => {};
-  }, []);
+  }, [dispatch]);
 
   if (
     Platform.OS === 'android' &&
@@ -56,8 +64,11 @@ const HomeScreen = () => {
   return (
     <ImageBg>
       <AppHeader
-        title={`Xin chao, ${name}`}
+        title={`Xin chào, ${name}`}
         rightHeader={<NotificationIcon />}
+        leftHeader={
+          <Avatar source={{uri: userProfile?.avatar}} size={32} rounded />
+        }
       />
       <ScrollView>
         <View style={styles.view}>
@@ -90,6 +101,14 @@ const HomeScreen = () => {
             ))}
           </View>
           <HorizontalScrollView data={listDish} />
+          <AppButton
+            onClick={() => {}}
+            title="Thêm bữa tiệc của bạn"
+            size="sm"
+            radius="md"
+            type="solid"
+            color="#7ED957"
+          />
         </View>
       </ScrollView>
     </ImageBg>

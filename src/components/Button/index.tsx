@@ -9,6 +9,7 @@ type ButtonComponentProps = {
   type: 'solid' | 'clear' | 'outline';
   color: string;
   disabled?: boolean;
+  radius?: string;
   style?: StyleProp<ViewStyle>;
   loading?: boolean;
   onClick: () => void;
@@ -29,6 +30,7 @@ const AppButton: FC<ButtonComponentProps> = props => {
   return (
     <Button
       onPress={props.onClick}
+      radius={props.radius}
       style={props.style}
       size={props.size || 'sm'}
       color={props.color}

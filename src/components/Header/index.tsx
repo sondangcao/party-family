@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Header as HeaderRNE} from '@rneui/themed';
+import {Header as HeaderRNE} from 'react-native-elements';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
 type HeaderComponentProps = {
@@ -14,6 +14,7 @@ type HeaderComponentProps = {
 const AppHeader: FC<HeaderComponentProps> = props => {
   return (
     <HeaderRNE
+      style={styles.container}
       backgroundColor={props.bgColor}
       leftComponent={
         <TouchableOpacity onPress={props.onPressLeft}>
@@ -31,9 +32,14 @@ const AppHeader: FC<HeaderComponentProps> = props => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   titleHeader: {
     fontSize: 16,
     fontWeight: '800',
+    marginTop: 5,
     color: '#fff',
   },
 });

@@ -8,12 +8,23 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import AppButton from '../Button';
 const {width} = Dimensions.get('window');
 const HorizontalScrollView = ({data}: {data: any[]}) => {
   const colors = ['red', 'blue', 'green', 'orange'];
   return (
     <View style={styles.view}>
-      <Text style={styles.dishTitle}>Các món ăn đã tạo</Text>
+      <View style={styles.view3}>
+        <Text style={styles.dishTitle}>Các món ăn đã tạo</Text>
+        <AppButton
+          onClick={() => {}}
+          title="Thêm món"
+          size="sm"
+          radius="md"
+          type="solid"
+          color="red"
+        />
+      </View>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -74,6 +85,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+  },
+  view3: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingBottom: 8,
   },
   dishTitle: {
     fontSize: 18,
