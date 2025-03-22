@@ -22,10 +22,12 @@ import {useAppDispatch} from '../../hooks/useAppDispatch';
 import {setUserAction} from '../../redux/slices/userSlice';
 import {userSelector} from '../../redux/selectors/userSelector';
 import {useSelector} from 'react-redux';
+import {logoutAction} from '../../redux/slices/authSlice';
 
 const HomeScreen = () => {
   const dispatch = useAppDispatch();
   const [name, setName] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const [expandedItems, setExpandedItems] = useState<{[key: number]: boolean}>(
     {},
   );
@@ -34,6 +36,7 @@ const HomeScreen = () => {
   const userProfile = useSelector(userSelector);
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const user = await axiosClient.get('/user/profile');
       const parties = await axiosClient.get('/party/list');
       const dishes = await axiosClient.get('dish/list');
@@ -41,6 +44,7 @@ const HomeScreen = () => {
       setName(`${user.data.user.firstName} ${user.data.user.lastName}`);
       setListParty(parties?.data.parties);
       setListDish(dishes.data?.data);
+      setLoading(false);
     })();
 
     return () => {};
@@ -71,45 +75,51 @@ const HomeScreen = () => {
         }
       />
       <ScrollView>
-        <View style={styles.view}>
-          <View style={styles.partyWrapper}>
-            <Text style={styles.partyTitle}>Những bữa tiệc sắp tới</Text>
-            {listParty.map((item: any, index: number) => (
-              <ListItem.Accordion
-                key={index}
-                content={
-                  <>
-                    <Icon
-                      name="party-popper"
-                      type="material-community"
-                      size={20}
-                      style={styles.mr8}
-                    />
-                    <ListItem.Content>
-                      <ListItem.Title>{item.name}</ListItem.Title>
-                    </ListItem.Content>
-                  </>
-                }
-                isExpanded={!!expandedItems[index]}
-                onPress={() => toggleAccordion(index)}>
-                <ListItem bottomDivider>
-                  <ListItem.Content>
-                    <ListItem.Title>{item.description}</ListItem.Title>
-                  </ListItem.Content>
-                </ListItem>
-              </ListItem.Accordion>
-            ))}
+        {loading ? (
+          <View style={styles.view}>
+            <Text>Loading...</Text>
           </View>
-          <HorizontalScrollView data={listDish} />
-          <AppButton
-            onClick={() => {}}
-            title="Thêm bữa tiệc của bạn"
-            size="sm"
-            radius="md"
-            type="solid"
-            color="#7ED957"
-          />
-        </View>
+        ) : (
+          <View style={styles.view}>
+            <View style={styles.partyWrapper}>
+              <Text style={styles.partyTitle}>Những bữa tiệc sắp tới</Text>
+              {listParty.map((item: any, index: number) => (
+                <ListItem.Accordion
+                  key={index}
+                  content={
+                    <>
+                      <Icon
+                        name="party-popper"
+                        type="material-community"
+                        size={20}
+                        style={styles.mr8}
+                      />
+                      <ListItem.Content>
+                        <ListItem.Title>{item.name}</ListItem.Title>
+                      </ListItem.Content>
+                    </>
+                  }
+                  isExpanded={!!expandedItems[index]}
+                  onPress={() => toggleAccordion(index)}>
+                  <ListItem bottomDivider>
+                    <ListItem.Content>
+                      <ListItem.Title>{item.description}</ListItem.Title>
+                    </ListItem.Content>
+                  </ListItem>
+                </ListItem.Accordion>
+              ))}
+            </View>
+            <HorizontalScrollView data={listDish} />
+            <AppButton
+              onClick={() => dispatch(logoutAction(false))}
+              title="Thêm bữa tiệc của bạn"
+              size="sm"
+              radius="md"
+              type="solid"
+              color="#7ED957"
+            />
+          </View>
+        )}
       </ScrollView>
     </ImageBg>
   );
