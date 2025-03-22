@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logoutAction} from '../redux/slices/authSlice';
 import {store} from '../redux/store';
 
-export const BASE_URL = 'http://192.168.1.101:3000';
+export const BASE_URL = 'http://localhost:3000';
 
 const axiosClient = axios.create({
   baseURL: BASE_URL,
